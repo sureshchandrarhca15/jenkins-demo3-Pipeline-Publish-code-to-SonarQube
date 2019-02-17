@@ -5,7 +5,7 @@ properties([parameters([choice(choices: ['master', 'dev-br', 'prod-br'], descrip
 node{
    stage('SCM Checkout'){
      echo "Pulling changes from the branch ${params.branch}"
-     git 'https://github.com/sureshchandrarhca15/jenkins-demo3-Pipeline-Publish-code-to-SonarQube.git', branch: "${params.branch}"
+     git url: 'https://github.com/sureshchandrarhca15/jenkins-demo3-Pipeline-Publish-code-to-SonarQube.git', branch: "${params.branch}"
    }
 
    stage('Compile-Package'){
