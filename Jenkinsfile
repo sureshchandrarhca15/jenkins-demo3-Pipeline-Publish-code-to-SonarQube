@@ -12,7 +12,7 @@ node{
    stage('SonarQube Analysis') {
         def mvnHome =  tool name: 'maven_3_5_2', type: 'maven'   
         withSonarQubeEnv('sonarqube_server') { 
-          sh "${mvnHome}/bin/mvn clean install package -Dmaven.test.skip=true" sonar:sonar"
+          sh "${mvnHome}/bin/mvn clean install package -Dmaven.test.skip=true sonar:sonar"
     }
    
     stage('Email Notification'){
