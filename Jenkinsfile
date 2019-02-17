@@ -14,7 +14,7 @@ node{
         withSonarQubeEnv('sonarqube_server') { 
           sh "${mvnHome}/bin/mvn clean install package -Dmaven.test.skip=true sonar:sonar"
     }
-   
+   }
     stage('Email Notification'){
     mail bcc: '', body: '''Hi,
     The Build Pipeline for "jenkins-demo3-Pipeline-Publish-code-to-SonarQube" Job has been triggered Successfully. 
