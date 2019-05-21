@@ -1,10 +1,10 @@
 def label = "worker-${UUID.randomUUID().toString()}"
 
 podTemplate(label: label, containers: [
-  containerTemplate(name: 'maven', image: 'sureshchandrarhca15/myjenkins-slave:v4.0', command: 'sleep 300', ttyEnabled: true, workingDir: '/var/jenkins_home'),
+  containerTemplate(name: 'maven', image: 'sureshchandrarhca15/myjenkins-slave:v4.0', command: 'cat', ttyEnabled: true, workingDir: '/var/jenkins_home'),
 ],
 volumes: [
-  hostPathVolume(mountPath: '/var/jenkins_home', hostPath: '/var/jenkins_home')
+  hostPathVolume(mountPath: '/tmp', hostPath: '/var/jenkins_home')
   ])
 {
   node(label) {
@@ -19,7 +19,7 @@ volumes: [
            previousGitCommit = sh(script: "git rev-parse ${gitCommit}~", returnStdout: true)
         }
         catch(Exception e) {
-           println "ERROR => maven build failed, exiting..."
+           println "ERROR => Code Checkout failed, exiting..."
            throw e
         }
      }
