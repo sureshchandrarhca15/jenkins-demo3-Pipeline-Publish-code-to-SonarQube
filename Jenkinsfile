@@ -1,27 +1,41 @@
-node{
-   stage('SCM Checkout'){
-     git 'https://github.com/sureshchandrarhca15/jenkins-demo3-Pipeline-Publish-code-to-SonarQube.git'
-   }
+def label = "worker-${UUID.randomUUID().toString()}"
 
-   stage('Compile-Package'){
-    //Get Maven Home path
-      def mvnHome =  tool name: 'maven_3_5_2', type: 'maven'   
-     sh "${mvnHome}/bin/mvn clean install package -Dmaven.test.skip=true"   
-   }
-   
-   stage('SonarQube Analysis') {
-        def mvnHome =  tool name: 'maven_3_5_2', type: 'maven'   
-        withSonarQubeEnv('sonarqube_server') { 
-          sh "${mvnHome}/bin/mvn clean install package -Dmaven.test.skip=true sonar:sonar"
+podTemplate(label: label, containers: [
+  containerTemplate(name: 'maven', image: 'sureshchandrarhca15/myjenkins-slave:v2.0', command: 'cat', ttyEnabled: true),
+])
+
+{
+  node(label) {
+     def myRepo, gitCommit, gitBranch, shortGitCommit, previousGitCommit
+     stage('Checkout') 
+     {
+        try {
+           myRepo = checkout scm
+           gitCommit = myRepo.GIT_COMMIT
+           gitBranch = myRepo.GIT_BRANCH
+           shortGitCommit = "${gitCommit[0..10]}"
+           previousGitCommit = sh(script: "git rev-parse ${gitCommit}~", returnStdout: true)
+        }
+        catch(Exception e) {
+           println "ERROR => maven build failed, exiting..."
+           throw e
+        }
+     }
+     stage('Build') {
+      try {
+        container('maven') {
+            sh """
+              pwd
+              echo "GIT_BRANCH=${gitBranch}"
+              echo "GIT_COMMIT=${gitCommit}"
+              mvn --version
+            """
+        }
+      }
+      catch (Exception e) {
+        println "Failed to test - ${currentBuild.fullDisplayName}"
+        throw e
+      }
     }
-   }
-    stage('Email Notification'){
-    mail bcc: '', body: '''Hi,
-    The Build Pipeline for "jenkins-demo3-Pipeline-Publish-code-to-SonarQube" Job has been triggered Successfully. 
-
-  Thanks,
-  Jenkins Team''', cc: 'sureshchandra.rhca@gmail.com', from: '', replyTo: '', subject: 'Jenkins Email Notification', to: 'sureshchand.rhce@gmail.com'
-
-   }
-
- }
+  }
+}
