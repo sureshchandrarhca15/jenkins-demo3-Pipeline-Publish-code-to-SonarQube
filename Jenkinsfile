@@ -28,6 +28,7 @@ podTemplate(label: label, containers: [
               pwd
               echo "GIT_BRANCH=${gitBranch}"
               echo "GIT_COMMIT=${gitCommit}"
+              id 
               mvn -version
             """
         }
