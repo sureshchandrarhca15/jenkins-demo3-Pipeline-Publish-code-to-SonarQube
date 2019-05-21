@@ -2,11 +2,10 @@ def label = "worker-${UUID.randomUUID().toString()}"
 
 podTemplate(label: label, containers: [
   containerTemplate(name: 'maven', image: 'sureshchandrarhca15/myjenkins-slave:v2.0', command: 'cat', ttyEnabled: true, workingDir: '/var/jenkins_home'),
-])
-
+],
 volumes: [
   hostPathVolume(mountPath: '/var/jenkins_home', hostPath: '/var/jenkins_home')
-  
+  ])
 {
   node(label) {
      def myRepo, gitCommit, gitBranch, shortGitCommit, previousGitCommit
