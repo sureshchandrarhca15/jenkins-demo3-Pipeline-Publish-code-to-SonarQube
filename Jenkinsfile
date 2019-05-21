@@ -1,7 +1,7 @@
 def label = "worker-${UUID.randomUUID().toString()}"
 
 podTemplate(label: label, containers: [
-  containerTemplate(name: 'maven', image: 'sureshchandrarhca15/myjenkins-slave:v2.0', command: 'cat', ttyEnabled: true),
+  containerTemplate(name: 'maven', image: 'sureshchandrarhca15/myjenkins-slave:v2.0', command: 'cat', ttyEnabled: true, workingDir: '/var/jenkins_home'),
 ])
 
 {
@@ -28,7 +28,7 @@ podTemplate(label: label, containers: [
               pwd
               echo "GIT_BRANCH=${gitBranch}"
               echo "GIT_COMMIT=${gitCommit}"
-              mvn --version
+              mvn -version
             """
         }
       }
