@@ -98,7 +98,7 @@ podTemplate(label: label, containers: [
 			      repository: 'kube-pipeline-demo',
 			      credentialsId: 'nexes-admin',
 			      artifacts: [
-			      [artifactId: myweb,
+			      [artifactId: 'myweb',
 			      classifier: '',
 			      file: 'target/myweb-' + version + '.war',
 			      type: 'war']
