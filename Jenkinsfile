@@ -2,6 +2,7 @@ def label = "worker-${UUID.randomUUID().toString()}"
 
 podTemplate(label: label, containers: [
   containerTemplate(name: 'maven', image: 'maven:3.3.9-jdk-8-alpine', command: 'cat', ttyEnabled: true),
+  containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true),
 ])
 
 {
@@ -104,5 +105,27 @@ podTemplate(label: label, containers: [
         throw e
       }
     }
+	  stage('Build Docker Image') {
+      try {
+        container('docker') {
+            withCredentials([[$class: 'UsernamePasswordMultiBinding',
+          credentialsId: 'dockerhub',
+          usernameVariable: 'DOCKER_HUB_USER',
+          passwordVariable: 'DOCKER_HUB_PASSWORD']]) {
+          sh """
+            docker login -u ${DOCKER_HUB_USER} -p ${DOCKER_HUB_PASSWORD}
+            docker build -t sureshchandrarhca15/mytomcat:${gitCommit} .
+            docker push sureshchandrarhca15/mytomcat:${gitCommit}
+            """
+        }
+      }
+        }
+      }
+      catch (Exception e) {
+        println "Failed to Build Docker Image - ${currentBuild.fullDisplayName}"
+        throw e
+      }
+    }
+	  
   }
 }
