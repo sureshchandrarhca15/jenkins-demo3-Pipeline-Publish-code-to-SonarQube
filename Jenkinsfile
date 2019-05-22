@@ -32,8 +32,13 @@ podTemplate(label: label, containers: [
               mvn clean install -Dmaven.test.skip=true
             """
         }
-        
-        stage('Unit Test') {
+      }
+      catch (Exception e) {
+        println "Failed to test - ${currentBuild.fullDisplayName}"
+        throw e
+      }
+    }
+    stage('Unit Test') {
       try {
         container('maven') {
             sh """
