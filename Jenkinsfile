@@ -121,6 +121,7 @@ volumes: [
             docker login -u ${DOCKER_HUB_USER} -p ${DOCKER_HUB_PASSWORD}
             docker build -t sureshchandrarhca15/mytomcat:${gitCommit} --build-arg VERSION="0.0.5-${BUILD_NUMBER}" .
             docker push sureshchandrarhca15/mytomcat:${gitCommit}
+	    echo ${gitCommit} > commit_id.txt
             """
         }
 	}
