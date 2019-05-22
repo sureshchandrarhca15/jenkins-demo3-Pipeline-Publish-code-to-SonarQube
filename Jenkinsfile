@@ -87,7 +87,7 @@ volumes: [
     stage('Upload Artifact') {
       try {
         container('maven') {
-	  sh "cp target/myweb-0.0.5.war myweb-0.0.5.${BUILD_NUMBER}.war"
+	  sh "cp target/myweb-0.0.5.war myweb-0.0.5-${BUILD_NUMBER}.war"
           nexusArtifactUploader(
 			      nexusVersion: 'nexus3',
 			      protocol: 'http',
@@ -99,7 +99,7 @@ volumes: [
 			      artifacts: [
 			      [artifactId: 'myweb',
 			      classifier: '',
-			        file: "myweb-0.0.5.${BUILD_NUMBER}.war",
+			        file: "myweb-0.0.5-${BUILD_NUMBER}.war",
 			        type: 'war']
 			      ]
 			    )
