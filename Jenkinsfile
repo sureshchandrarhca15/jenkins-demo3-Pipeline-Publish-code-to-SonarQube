@@ -34,7 +34,7 @@ podTemplate(label: label, containers: [
         }
       }
       catch (Exception e) {
-        println "Failed to test - ${currentBuild.fullDisplayName}"
+        println "Failed to Maven Build - ${currentBuild.fullDisplayName}"
         throw e
       }
     }
@@ -52,6 +52,19 @@ podTemplate(label: label, containers: [
       }
       catch (Exception e) {
         println "Failed to test - ${currentBuild.fullDisplayName}"
+        throw e
+      }
+    }
+    stage('Sonar Analysis') {
+      try {
+        container('maven') {
+            withSonarQubeEnv {
+              sh "mvn -Dsonar.projectKey=sampleprojectkey -DBranch=${gitBranch} -Dsonar.branch=${gitBranch} -e -B clean sonar:sonar"
+            }
+        }
+      }
+      catch (Exception e) {
+        println "Failed to Sonar - ${currentBuild.fullDisplayName}"
         throw e
       }
     }
