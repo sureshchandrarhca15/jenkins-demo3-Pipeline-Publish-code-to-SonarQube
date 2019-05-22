@@ -3,6 +3,7 @@ def label = "worker-${UUID.randomUUID().toString()}"
 podTemplate(label: label, containers: [
   containerTemplate(name: 'maven', image: 'maven:3.3.9-jdk-8-alpine', command: 'cat', ttyEnabled: true),
   containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true),
+  containerTemplate(name: 'kubectl', image: 'docker.io/lachlanevenson/k8s-kubectl', command: 'cat', ttyEnabled: true),
 ],
 volumes: [
   hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
@@ -110,7 +111,7 @@ volumes: [
         throw e
       }
     }
-	  stage('Build Docker Image') {
+  stage('Build Docker Image') {
       try {
         container('docker') {
             withCredentials([[$class: 'UsernamePasswordMultiBinding',
@@ -132,5 +133,20 @@ volumes: [
       }
     }
 	  
+stage('Deploy on Kubernetes') {
+      try {
+        container('kubectl') {
+            withKubeConfig(caCertificate: '', clusterName: 'standard-cluster-1', contextName: '', credentialsId: 'kube-admin', namespace: 'default', serverUrl: 'https://35.247.106.248') {
+		    sh 'kubectl set image deployment/tomcat tomcat="sureshchandrarhca15/mytomcat:${cat commit_id.txt}"'
+        }
+	}
+      }
+      catch (Exception e) {
+        println "Failed to deploy on Kubernetes - ${currentBuild.fullDisplayName}"
+        throw e
+      }
+    }
+ 
+	 
   }
 }
