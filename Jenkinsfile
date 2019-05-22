@@ -6,7 +6,7 @@ podTemplate(label: label, containers: [
 ],
 volumes: [
   hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
-  hostPathVolume(mountPath: '/home/jenkins', hostPath: '/var/jenkins_home')
+  persistentVolumeClaim(claimName: 'jenkins-pvc', mountPath: '/home/jenkins')  
 ])
 
 
