@@ -25,10 +25,6 @@ podTemplate(label: label, containers: [
       try {
         container('maven') {
             sh """
-              pwd
-              echo "GIT_BRANCH=${gitBranch}"
-              echo "GIT_COMMIT=${gitCommit}"
-              id 
               mvn clean install -Dmaven.test.skip=true
             """
         }
@@ -42,10 +38,6 @@ podTemplate(label: label, containers: [
       try {
         container('maven') {
             sh """
-              pwd
-              echo "GIT_BRANCH=${gitBranch}"
-              echo "GIT_COMMIT=${gitCommit}"
-              id 
               mvn test -Dmaven.test.skip=false
             """
         }
@@ -89,6 +81,7 @@ podTemplate(label: label, containers: [
     stage('Upload Artifact') {
       try {
         container('maven') {
+	  sh "cp target/myweb-0.0.5.war myweb-0.0.5.${BUILD_NUMBER}.war"
           nexusArtifactUploader(
 			      nexusVersion: 'nexus3',
 			      protocol: 'http',
@@ -100,8 +93,8 @@ podTemplate(label: label, containers: [
 			      artifacts: [
 			      [artifactId: 'myweb',
 			      classifier: '',
-			      file: 'target/myweb-' + '0.0.5' + '.war',
-			      type: 'war']
+			        file: "myweb-0.0.5.${BUILD_NUMBER}.war",
+			        type: 'war']
 			      ]
 			    )
         }
