@@ -93,7 +93,7 @@ volumes: [
 			      protocol: 'http',
 			      nexusUrl: '34.83.196.108:8081',
 			      groupId: 'in.javahome',
-		              version: "0.0.5.${BUILD_NUMBER}",
+		              version: "0.0.5-${BUILD_NUMBER}",
 			      repository: 'kube-pipeline-demo',
 			      credentialsId: 'nexes-admin',
 			      artifacts: [
