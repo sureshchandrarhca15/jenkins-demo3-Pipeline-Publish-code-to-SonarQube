@@ -32,6 +32,18 @@ podTemplate(label: label, containers: [
               mvn clean install -Dmaven.test.skip=true
             """
         }
+        
+        stage('Unit Test') {
+      try {
+        container('maven') {
+            sh """
+              pwd
+              echo "GIT_BRANCH=${gitBranch}"
+              echo "GIT_COMMIT=${gitCommit}"
+              id 
+              mvn clean test -Dmaven.test.skip=false
+            """
+        }
       }
       catch (Exception e) {
         println "Failed to test - ${currentBuild.fullDisplayName}"
