@@ -118,8 +118,7 @@ podTemplate(label: label, containers: [
             docker push sureshchandrarhca15/mytomcat:${gitCommit}
             """
         }
-      }
-        }
+	}
       }
       catch (Exception e) {
         println "Failed to Build Docker Image - ${currentBuild.fullDisplayName}"
