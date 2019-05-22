@@ -58,7 +58,7 @@ podTemplate(label: label, containers: [
     stage('Sonar Analysis') {
       try {
         container('maven') {
-            withSonarQubeEnv {
+            withSonarQubeEnv('SonarQubeServer') {
               sh "mvn -DBranch=${gitBranch} -Dsonar.branch=${gitBranch} -e -B clean sonar:sonar"
             }
         }
