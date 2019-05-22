@@ -59,7 +59,7 @@ podTemplate(label: label, containers: [
       try {
         container('maven') {
             withSonarQubeEnv {
-              sh "mvn -Dsonar.projectKey=sampleprojectkey -DBranch=${gitBranch} -Dsonar.branch=${gitBranch} -e -B clean sonar:sonar"
+              sh "mvn -DBranch=${gitBranch} -Dsonar.branch=${gitBranch} -e -B clean sonar:sonar"
             }
         }
       }
