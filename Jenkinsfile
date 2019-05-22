@@ -71,11 +71,13 @@ podTemplate(label: label, containers: [
     stage('Quality Gate') {
       try {
         container('maven') {
+          withSonarQubeEnv('SonarQubeServer') {
           timeout(time: 1, unit: 'HOURS') {
               def qg = waitForQualityGate()
               if (qg.status != 'OK' && qg.status != 'WARN') {
                 error "Pipeline aborted due to quality gate failure: ${qg.status}"
               }
+          }
           }
         }
       }
