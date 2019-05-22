@@ -46,7 +46,7 @@ podTemplate(label: label, containers: [
               echo "GIT_BRANCH=${gitBranch}"
               echo "GIT_COMMIT=${gitCommit}"
               id 
-              mvn clean test -Dmaven.test.skip=false
+              mvn test -Dmaven.test.skip=false
             """
         }
       }
@@ -59,7 +59,7 @@ podTemplate(label: label, containers: [
       try {
         container('maven') {
             withSonarQubeEnv('SonarQubeServer') {
-              sh "mvn -DBranch=${gitBranch} -Dsonar.branch=${gitBranch} -e -B clean sonar:sonar"
+              sh "mvn -DBranch=${gitBranch} -Dsonar.branch=${gitBranch} -e -B sonar:sonar"
             }
         }
       }
@@ -83,6 +83,31 @@ podTemplate(label: label, containers: [
       }
       catch (Exception e) {
         println "Failed to Sonar QG - ${currentBuild.fullDisplayName}"
+        throw e
+      }
+    }
+    stage('Upload Artifact') {
+      try {
+        container('maven') {
+          nexusArtifactUploader(
+			      nexusVersion: 'nexus3',
+			      protocol: 'http',
+			      nexusUrl: 'http://34.83.196.108:8081',
+			      groupId: 'in.javahome',
+			      version: 0.0.5,
+			      repository: 'kube-pipeline-demo',
+			      credentialsId: 'nexes-admin',
+			      artifacts: [
+			      [artifactId: myweb,
+			      classifier: '',
+			      file: 'myweb' + version + '.war',
+			      type: 'war']
+			      ]
+			    )
+        }
+      }
+      catch (Exception e) {
+        println "Failed to Upload Artifact - ${currentBuild.fullDisplayName}"
         throw e
       }
     }
