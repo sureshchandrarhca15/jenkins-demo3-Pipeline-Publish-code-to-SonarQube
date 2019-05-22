@@ -137,7 +137,7 @@ stage('Deploy on Kubernetes') {
       try {
         container('kubectl') {
             withKubeConfig(caCertificate: '', clusterName: 'standard-cluster-1', contextName: '', credentialsId: 'kube-admin', namespace: 'default', serverUrl: 'https://35.247.106.248') {
-		    sh 'kubectl set image deployment/tomcat tomcat="sureshchandrarhca15/mytomcat:${cat commit_id.txt}"'
+		    sh 'kubectl set image deployment/tomcat tomcat=sureshchandrarhca15/mytomcat:${gitCommit}'
         }
 	}
       }
