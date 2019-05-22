@@ -122,8 +122,7 @@ volumes: [
             docker login -u ${DOCKER_HUB_USER} -p ${DOCKER_HUB_PASSWORD}
             docker build -t sureshchandrarhca15/mytomcat:${gitCommit} --build-arg VERSION="0.0.5-${BUILD_NUMBER}" .
             docker push sureshchandrarhca15/mytomcat:${gitCommit}
-	    echo ${gitCommit} > commit_id.txt
-            """
+	    """
         }
 	}
       }
@@ -137,7 +136,7 @@ stage('Deploy on Kubernetes') {
       try {
         container('kubectl') {
             withKubeConfig(caCertificate: '', clusterName: 'standard-cluster-1', contextName: '', credentialsId: 'kube-admin', namespace: 'default', serverUrl: 'https://35.247.106.248') {
-		    sh "kubectl set image deployment/tomcat tomcat=sureshchandrarhca15/mytomcat:${gitCommit}"
+		    sh "kubectl set image deployment/tomcat tomcat-container=sureshchandrarhca15/mytomcat:${gitCommit}"
         }
 	}
       }
