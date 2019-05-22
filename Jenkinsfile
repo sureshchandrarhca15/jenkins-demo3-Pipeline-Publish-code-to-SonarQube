@@ -29,7 +29,7 @@ podTemplate(label: label, containers: [
               echo "GIT_BRANCH=${gitBranch}"
               echo "GIT_COMMIT=${gitCommit}"
               id 
-              mvn -version
+              mvn clean install -Dmaven.test.skip=true
             """
         }
       }
