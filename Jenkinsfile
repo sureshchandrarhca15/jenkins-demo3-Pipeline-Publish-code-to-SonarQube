@@ -92,7 +92,7 @@ podTemplate(label: label, containers: [
           nexusArtifactUploader(
 			      nexusVersion: 'nexus3',
 			      protocol: 'http',
-			      nexusUrl: 'http://34.83.196.108:8081',
+			      nexusUrl: '34.83.196.108:8081',
 			      groupId: 'in.javahome',
 			      version: '0.0.5',
 			      repository: 'kube-pipeline-demo',
