@@ -100,7 +100,7 @@ podTemplate(label: label, containers: [
 			      artifacts: [
 			      [artifactId: 'myweb',
 			      classifier: '',
-			      file: 'target/myweb-' + version + '.war',
+			      file: 'target/myweb-' + '0.0.5' + '.war',
 			      type: 'war']
 			      ]
 			    )
