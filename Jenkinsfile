@@ -8,8 +8,8 @@ node{
    SONAR_PROJECT_KEY   = 'kube-maven-sonarkey'
    SONAR_GOAL          = "sonar:sonar"
    SONAR_PROJECT       = 'SR Kube-Pipeline'
-   mavenImageName      = 'maven:3.3.9-jdk-8-alpine'
-   mavenImageTag       = 'latest'
+   mavenImageName      = 'maven'
+   mavenImageTag       = '3.3.9-jdk-8-alpine'
    mavenContainerName  = 'maven'
    mavenWorkDir	       = '/home/jenkins'
    mavenClaimName      = "jenkins-pvc"
