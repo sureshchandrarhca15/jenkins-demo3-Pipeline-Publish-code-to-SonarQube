@@ -1,5 +1,5 @@
 #!groovy
-@Library('Sapient-DevOps@master') _
+@Library('GKE-DevOps@master') _
 node{ 
  maven {
    MAVEN_BUILD_GOALS   = "clean install -e -X -Dmaven.test.skip=false"
