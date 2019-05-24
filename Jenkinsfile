@@ -6,7 +6,7 @@ node{
    POM_FILE_PATH       = 'pom.xml'
    MAVEN_TEST_GOALS    = "test -e -X"
    SONAR_PROJECT_KEY   = 'kube-maven-sonarkey'
-   SONAR_GOAL          = "sonar:sonar"
+   MAVEN_SONAR_GOAL    = "sonar:sonar"
    SONAR_PROJECT       = 'SR Kube-Pipeline'
    mavenImageName      = 'maven'
    mavenImageTag       = '3.3.9-jdk-8-alpine'
